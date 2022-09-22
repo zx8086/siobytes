@@ -11,14 +11,14 @@ const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventi
 
 const { BasicTracerProvider, ConsoleSpanExporter, SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base')
 const { NodeTracerProvider } = require("@opentelemetry/sdk-trace-node")
-// const { MeterProvider, PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics-base');
+// const { MeterProvider, PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics-base')
 
 // const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-http');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc')
 // const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http')
 // const { OTLPTraceSpanExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 
-const { getNodeAutoInstrumentations } = require("@opentelemetry/auto-instrumentations-node")
+// const { getNodeAutoInstrumentations } = require("@opentelemetry/auto-instrumentations-node")
 const { ExpressInstrumentation } = require("opentelemetry-instrumentation-express")
 // const { KafkaJsInstrumentation } = require('opentelemetry-instrumentation-kafkajs')
 // const { RouterInstrumentation } = require('@opentelemetry/instrumentation-router');
@@ -27,6 +27,10 @@ const { registerInstrumentations } = require('@opentelemetry/instrumentation')
 const { HttpInstrumentation } = require ('@opentelemetry/instrumentation-http')
 const { GraphQLInstrumentation } = require ('@opentelemetry/instrumentation-graphql')
 
+const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api')
+// For troubleshooting, set the log level to DiagLogLevel.DEBUG
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG)
+
 const collectorOptions = {
   url: 'http://192.168.0.9:4317/v1/traces', // url is optional and can be omitted - default is http://localhost:4318/v1/traces
   headers: {}, // an optional object containing custom headers to be sent with each request
@@ -34,15 +38,6 @@ const collectorOptions = {
 }
 
 const exporter = new OTLPTraceExporter(collectorOptions)
-
-// Register server-related instrumentation
-// registerInstrumentations({
-//   instrumentations: [
-//     new HttpInstrumentation(),
-//     new ExpressInstrumentation(),
-//     new GraphQLInstrumentation()
-//   ]
-// })
 
 // const sdk = new opentelemetry.NodeSDK({
 //   traceExporter: new opentelemetry.tracing.ConsoleSpanExporter(),
@@ -102,36 +97,12 @@ provider.register()
 
 // ---
 
-// /* tracing-simon.js */
-// 'use strict';
 
-// const dotenv = require('dotenv');
-// dotenv.config();
 
-// const opentelemetry = require("@opentelemetry/sdk-node");
-// const { LogLevel } = require("@opentelemetry/core");
-// const { Resource } = require('@opentelemetry/resources');
-// const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
-// const { BasicTracerProvider, ConsoleSpanExporter, SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
-// const { NodeTracerProvider } = require("@opentelemetry/sdk-trace-node");
-// // const { MeterProvider, PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics-base');
 
-// // const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-http');
-// const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
-// // const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
-// // const { OTLPTraceSpanExporter } = require('@opentelemetry/exporter-trace-otlp-http');
 
-// const { getNodeAutoInstrumentations } = require("@opentelemetry/auto-instrumentations-node");
-// const { ExpressInstrumentation } = require("opentelemetry-instrumentation-express");
-// const { KafkaJsInstrumentation } = require('opentelemetry-instrumentation-kafkajs');
-// // const { RouterInstrumentation } = require('@opentelemetry/instrumentation-router');
-// // const { SocketIoInstrumentation } = require('opentelemetry-instrumentation-socket.io');
-// // const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 
-// // const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
-// // // For troubleshooting, set the log level to DiagLogLevel.DEBUG
-// // diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 // const sdk = new opentelemetry.NodeSDK({
 //   traceExporter: new opentelemetry.tracing.ConsoleSpanExporter(),
